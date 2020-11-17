@@ -8,7 +8,8 @@
 
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,700' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=PT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
-    <link href='https://netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.css' rel='stylesheet' type='text/css'>
+    <link href='https://netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.css' rel='stylesheet'
+        type='text/css'>
     <link href='https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css' rel='stylesheet' type='text/css'>
 
     <link href='lib/metricsgraphics.css' rel='stylesheet' type='text/css'>
@@ -22,10 +23,12 @@
     .main {
         padding: 0 5% 0 5%;
     }
+
     .margin {
         margin: 0 1rem 1rem 1rem;
     }
-    .footer{
+
+    .footer {
         border-top: 1px solid #c9c9c9;
         border-bottom: 1px solid #c9c9c9;
         padding: 1rem 0 1rem 0;
@@ -38,8 +41,13 @@
         <div class="text-center mt-md-3">
             <h2>Covid-19 Kanton Bern 2 Welle</h2>
             <p>
-                Die Statistik zeigt den 7 Tag Schnitt und den Prozentsatz zur Vorwoche im Kanton Bern. Die Massnahmen werden als Meilensteine dargestellt. Die Massnahmen sind verlinkt auf die Medienmitteilungen des Kantons Bern (Datum der Medienmitteilung und nicht des Inkrafttreten der Massnahme). <a href="https://www.besondere-lage.sites.be.ch/besondere-lage_sites/de/index/corona/index.html" target="_blank">Datenbasis</a>
+                Die Statistik zeigt den 7 Tag Schnitt und den Prozentsatz zur Vorwoche im Kanton Bern. Die Massnahmen
+                werden als Meilensteine dargestellt. Die Massnahmen sind verlinkt auf die Medienmitteileungen des
+                Kantons Bern (Datum der Medienmitteilung und nicht des Inkrafttreten der Massnahme). <a
+                    href="https://www.besondere-lage.sites.be.ch/besondere-lage_sites/de/index/corona/index.html"
+                    target="_blank">Datenbasis</a>
             </p>
+            <p id="updateTime"></p>
         </div>
 
         <div class='' id='covidBe'></div>
@@ -64,17 +72,27 @@
 
 
 <script>
+    var covidFile = 'data/covidBe.json';
 
+    var client = new XMLHttpRequest();
+    client.open('GET', covidFile, true);
+    client.send();
 
-    var lastModified = document.lastModified;
-    console.log(lastModified);
-  
+    client.onreadystatechange = function () {
+        if (this.readyState == this.HEADERS_RECEIVED) {
+            var date = client.getResponseHeader('Last-Modified');
+            document.getElementById('updateTime').innerHTML = 'updated ' + date;
+            if (date != my_expected_type) {
+                client.abort();
+            }
+        }
+    }
 
     var width = window.innerWidth / 100 * 90;
     var height = width / 2;
     MG._hooks = {};
 
-    d3.json('data/covidBe.json', function (data) {
+    d3.json(covidFile, function (data) {
         for (var i = 0; i < data.length; i++) {
             data[i] = MG.convert.date(data[i], 'date');
         }
@@ -137,7 +155,7 @@
 
 
         MG.data_graphic({
-            title: lastModified,
+            //title: lastModified,
             //description: "This line chart contains multiple lines.",
             data: data,
             width: width,
