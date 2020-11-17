@@ -104,8 +104,9 @@
 
     client.onreadystatechange = function () {
         if (this.readyState == this.HEADERS_RECEIVED) {
-            var date = client.getResponseHeader('Date');
-            document.getElementById('updateTime').innerHTML = 'updated ' + date;
+            var age = client.getResponseHeader('age');
+            var date = client.getResponseHeader('date');
+            document.getElementById('updateTime').innerHTML = 'updated ' + new Date(date - age); ;
         }
     }
 
