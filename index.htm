@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang='de'>
 
 <head>
@@ -105,9 +106,6 @@
         if (this.readyState == this.HEADERS_RECEIVED) {
             var date = client.getResponseHeader('Date');
             document.getElementById('updateTime').innerHTML = 'updated ' + date;
-            if (date != my_expected_type) {
-                client.abort();
-            }
         }
     }
 
