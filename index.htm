@@ -25,7 +25,7 @@
 </head>
 <style>
     .main {
-        padding: 0 5% 0 5%;
+        padding: 0 10% 0 10%;
     }
 
     .margin {
@@ -36,6 +36,12 @@
         border-top: 1px solid #c9c9c9;
         border-bottom: 1px solid #c9c9c9;
         padding: 1rem 0 1rem 0;
+    }
+
+    @media screen and (max-width: 1500px) {
+        .main {
+            padding: 0 1% 0 1%;
+        }
     }
 </style>
 
@@ -66,7 +72,8 @@
         </div>
 
         <div class="text-center mt-md-3 margin footer">
-            <a href="https://github.com/nisasche/covid19ChBe" target="_blank">Covid-19 Kanton Bern by nisasche on GitHub</a>
+            <a href="https://github.com/nisasche/covid19ChBe" target="_blank">Covid-19 Kanton Bern by nisasche on
+                GitHub</a>
         </div>
     </div>
 
@@ -92,7 +99,8 @@
         }
     }
 
-    var width = window.innerWidth / 100 * 90;
+    var width = window.innerWidth 
+    var width = width <= 1500 ? width / 100 * 98 : width / 100 * 80;
     var height = width / 2;
     MG._hooks = {};
 
@@ -156,6 +164,7 @@
             'label': 'Slow-Down CH',
             'click': bundSlowdown
         }];
+
 
         MG.data_graphic({
             //title: lastModified,
