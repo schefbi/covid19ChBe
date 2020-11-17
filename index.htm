@@ -80,7 +80,7 @@
 
     client.onreadystatechange = function () {
         if (this.readyState == this.HEADERS_RECEIVED) {
-            var date = client.getResponseHeader('Last-Modified');
+            var date = client.getResponseHeader('Date');
             document.getElementById('updateTime').innerHTML = 'updated ' + date;
             if (date != my_expected_type) {
                 client.abort();
