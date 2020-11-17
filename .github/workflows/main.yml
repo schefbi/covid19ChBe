@@ -19,10 +19,20 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - name: Set current date as env variable
-        run: echo "::set-env name=NOW::$(date +'%Y-%m-%dT%H:%M:%S')"
+      - name: Get Time
+        id: time
+        uses: nanzm/get-time-action@v1.1
+        with:
+          timeZone: 8
+          format: 'YYYY-MM-DD-HH-mm-ss'
+      - name: Usage
+        env:
+          TIME: "${{ steps.time.outputs.time }}"
+        run: |
+          echo $TIME
       - name: Create File
         uses: "finnp/create-file-action@master"
         env:
-            FILE_NAME: "lib/buildDate.js"
-            FILE_DATA: "document.getElementById('updateTime').innerHTML = 'aktualisiert ' $NOW"
+          TIME: "${{ steps.time.outputs.time }}"
+          FILE_NAME: "lib/buildDate.js"
+          FILE_DATA: "document.getElementById('updateTime').innerHTML = 'aktualisiert ' $NOW"
