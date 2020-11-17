@@ -21,10 +21,8 @@ jobs:
     steps:
       - name: Set current date as env variable
         run: echo "::set-env name=NOW::$(date +'%Y-%m-%dT%H:%M:%S')"
-      - name: Echo current date
-        run: echo 
       - name: Create File
         uses: "finnp/create-file-action@master"
         env:
-            FILE_NAME: "buildDate.js"
-            FILE_DATA: "document.getElementById('updateTime').innerHTML = 'aktualisiert '$NOW"
+            FILE_NAME: "lib/buildDate.js"
+            FILE_DATA: "document.getElementById('updateTime').innerHTML = 'aktualisiert ' $NOW"
