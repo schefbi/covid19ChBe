@@ -1,0 +1,155 @@
+<html lang='de'>
+
+<head>
+    <meta content='text/html; charset=utf-8' http-equiv='Content-Type'>
+
+    <title>Covid-19 7 Tage Schnitt Kanton Bern 2 Welle
+    </title>
+
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,700' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=PT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
+    <link href='https://netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.css' rel='stylesheet' type='text/css'>
+    <link href='https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css' rel='stylesheet' type='text/css'>
+
+    <link href='lib/metricsgraphics.css' rel='stylesheet' type='text/css'>
+
+    <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js'></script>
+    <script src='https://d3js.org/d3.v4.min.js' charset='utf-8'></script>
+    <script src='lib/metricsgraphics.min.js'></script>
+
+</head>
+<style>
+    .main {
+        padding: 0 5% 0 5%;
+    }
+    .margin {
+        margin: 0 1rem 1rem 1rem;
+    }
+    .footer{
+        border-top: 1px solid #c9c9c9;
+        border-bottom: 1px solid #c9c9c9;
+        padding: 1rem 0 1rem 0;
+    }
+</style>
+
+<body>
+
+    <div class="main">
+        <div class="text-center mt-md-3">
+            <h2>Covid-19 Kanton Bern 2 Welle</h2>
+            <p>
+                Die Statistik zeigt den 7 Tag Schnitt und den Prozentsatz zur Vorwoche im Kanton Bern. Die Massnahmen werden als Meilensteine dargestellt. Die Massnahmen sind verlinkt auf die Medienmitteileungen des Kantons Bern (Datum der Medienmitteilung und nicht des Inkrafttreten der Massnahme). <a href="https://www.besondere-lage.sites.be.ch/besondere-lage_sites/de/index/corona/index.html" target="_blank">Datenbasis</a>
+            </p>
+        </div>
+
+        <div class='' id='covidBe'></div>
+
+        <div class="row margin">
+
+            <div class='legend col-md-6'></div>
+
+            <div class="col-md-6 text-right">
+                <a href="https://metricsgraphicsjs.org/" target="_blank">Grafik by MetricsGraphics.js</a>
+            </div>
+        </div>
+
+        <div class="text-center mt-md-3 margin footer">
+            <a href="https://github.com/nisasche" target="_blank">Covid-19 Kanton Bern by nisasche on GitHub</a>
+        </div>
+    </div>
+
+</body>
+
+</html>
+
+
+<script>
+
+
+    var lastModified = document.lastModified;
+    console.log(lastModified);
+  
+
+    var width = window.innerWidth / 100 * 90;
+    var height = width / 2;
+    MG._hooks = {};
+
+    d3.json('data/covidBe.json', function (data) {
+        for (var i = 0; i < data.length; i++) {
+            data[i] = MG.convert.date(data[i], 'date');
+        }
+
+
+        var mask1000 = function () {
+            window.open('https://www.be.ch/portal/de/index/mediencenter/medienmitteilungen.meldungNeu.html/portal/de/meldungen/mm/2020/09/20200924_0957_an_grossveranstaltungengiltmaskentragpflicht?cq_ck=1600935011668', '_blank');
+        };
+
+        var maskIn = function () {
+            window.open('https://www.be.ch/portal/de/index/mediencenter/medienmitteilungen.meldungNeu.mm.html/portal/de/meldungen/mm/2020/10/20201007_1123_in_oeffentlich_zugaenglicheninnenraeumenwirddiemaskenpflichteing', '_blank');
+        };
+
+        var grossVeranstalttungenErlaubt = function () {
+            alert("Grossverantstaltungen sind schweizweit wieder erlaubt.");
+        };
+
+        var slowDownBe = function () {
+            window.open('https://www.be.ch/portal/de/index/mediencenter/medienmitteilungen.meldungNeu.mm.html/portal/de/meldungen/mm/2020/10/20201023_1625_gezielte_massnahmenzurbekaempfungderpandemie', '_blank');
+        };
+
+        var grossVeranstalttungenVerboten = function () {
+            window.open('https://www.be.ch/portal/de/index/mediencenter/medienmitteilungen.meldungNeu.mm.html/portal/de/meldungen/mm/2020/10/20201018_1431_verbot_zur_durchfuehrungvongrossveranstaltungenimkantonbern', '_blank');
+        };
+
+        var bundSlowdown = function () {
+            window.open('https://www.be.ch/portal/de/index/mediencenter/medienmitteilungen.meldungNeu.mm.html/portal/de/meldungen/mm/2020/10/20201028_1518_coronavirus', '_blank');
+        };
+
+        var markers = [{
+            'date': new Date('2020-09-24T00:00:00.000Z'),
+            'label': "Masken Veran.",
+            'click': mask1000
+        },
+        {
+            'date': new Date('2020-10-01T00:00:00.000Z'),
+            'label': '>1000',
+            'mouseover': grossVeranstalttungenErlaubt
+        },
+        {
+            'date': new Date('2020-10-07T00:00:00.000Z'),
+            'label': "Innenräumen Masken",
+            'click': maskIn
+        },
+        {
+            'date': new Date('2020-10-18T00:00:00.000Z'),
+            'label': "<1000 BE",
+            'click': grossVeranstalttungenVerboten
+        },
+        {
+            'date': new Date('2020-10-24T00:00:00.000Z'),
+            'label': 'div. BE',
+            'click': slowDownBe
+        },
+        {
+            'date': new Date('2020-10-28T00:00:00.000Z'),
+            'label': 'Bundesrat',
+            'click': bundSlowdown
+        }];
+
+
+        MG.data_graphic({
+            title: lastModified,
+            //description: "This line chart contains multiple lines.",
+            data: data,
+            width: width,
+            height: height,
+            right: 10,
+            target: '#covidBe',
+            legend: ['7 Tage Ø', 'Vorwoche %'],
+            legend_target: '.legend',
+            markers: markers,
+            aggregate_rollover: true
+        });
+    });
+
+
+</script>
