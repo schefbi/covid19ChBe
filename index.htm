@@ -97,18 +97,25 @@
 
 <script>
     var covidFile = 'data/covidBe.json';
-
+    
     var client = new XMLHttpRequest();
     client.open('GET', covidFile, true);
     client.send();
 
     client.onreadystatechange = function () {
         if (this.readyState == this.HEADERS_RECEIVED) {
-            var age = client.getResponseHeader('age');
-            document.getElementById('updateTime').innerHTML = 'updated ' + new Date(Date.now() - age * 1000); ;
+            var eTagServer = client.getResponseHeader('etag');
+            var date = client.getResponseHeader('date');
+            var eTag = sessionStorage.getItem('eTag'); 
+            
+             if(eTag != eTagServer){
+              sessionStorage.setItem('eTag', eTagServer)
+              sessionStorage.setItem('updateDate', date)
+            }
+            document.getElementById('updateTime').innerHTML = 'updated ' + sessionStorage.getItem('updateDate');
         }
     }
-
+    
     var width = window.innerWidth 
     var width = width <= 1500 ? width / 100 * 98 : width / 100 * 80;
     var height = width / 2;
