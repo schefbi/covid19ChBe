@@ -110,13 +110,10 @@
             document.getElementById('updateTime').innerHTML = 'updated ' + sessionStorage.getItem('updateDate');
         }
     }
-    
-    setInterval(function() {
-        var width = window.innerWidth 
-        var width = width <= 1500 ? width / 100 * 98 : width / 100 * 80;
-        var height = width / 2;
-    }, 1500);
-    
+
+    var width = window.innerWidth 
+    var width = width <= 1500 ? width / 100 * 98 : width / 100 * 80;
+    var height = width / 2; 
 
     MG._hooks = {};
 
