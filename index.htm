@@ -111,9 +111,13 @@
         }
     }
     
-    var width = window.innerWidth 
-    var width = width <= 1500 ? width / 100 * 98 : width / 100 * 80;
-    var height = width / 2;
+    setInterval(function() 
+        var width = window.innerWidth 
+        var width = width <= 1500 ? width / 100 * 98 : width / 100 * 80;
+        var height = width / 2;
+    }, 1500);
+    
+
     MG._hooks = {};
 
     d3.json(covidFile, function (data) {
@@ -192,9 +196,5 @@
             aggregate_rollover: true
         });
     });
-    
-    $('svg').attr('width','100%');
-    $('svg').attr('height','100%');
-
 
 </script>
