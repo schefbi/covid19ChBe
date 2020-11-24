@@ -32,7 +32,11 @@
     .margin {
         margin: 0 1rem 1rem 1rem;
     }
-
+    
+    #covidBe {
+        overflow: auto;
+    }
+    
     .footer {
         border-top: 1px solid #c9c9c9;
         border-bottom: 1px solid #c9c9c9;
@@ -111,7 +115,7 @@
         }
     }
 
-    var width = window.innerWidth 
+    var width = window.innerWidth >= 1000 window.innerWidth ? 1000;
     var width = width <= 1500 ? width / 100 * 98 : width / 100 * 80;
     var height = width / 2; 
 
