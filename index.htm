@@ -36,6 +36,10 @@
     #covidBe {
         overflow: auto;
     }
+
+    .modify-time-period-controls {
+        padding-left: calc(50% - 10%);
+    }
     
     .footer {
         border-top: 1px solid #c9c9c9;
@@ -74,6 +78,13 @@
         </div>
 
         <div class='' id='covidBe'></div>
+
+        <div class="btn-group btn-group-sm text-center modify-time-period-controls">
+            <button type="button" class="btn btn-default active" data-time_period="0">Alles</button>
+            <button type="button" class="btn btn-default" data-time_period="61">2 letzen Monate</button>
+            <button type="button" class="btn btn-default" data-time_period="31">Letzter Monat</button>
+            <button type="button" class="btn btn-default" data-time_period="15">14 Tage</button>
+        </div>
 
         <div class="row margin">
 
@@ -121,11 +132,17 @@
 
     MG._hooks = {};
 
+    function getStatistic(days){
     d3.json(covidFile, function (data) {
-        for (var i = 0; i < data.length; i++) {
-            data[i] = MG.convert.date(data[i], 'date');
-        }
 
+        for (var i = 0; i < data.length; i++) {
+            
+            var dataSplit = data[i];
+            var splice = days > 0 ? dataSplit.length-days : 0;
+            dataSplit.splice(0, splice); 
+
+            data[i] = MG.convert.date(dataSplit, 'date');
+        }
 
         var mask1000 = function () {
             window.open('https://www.be.ch/portal/de/index/mediencenter/medienmitteilungen.meldungNeu.html/portal/de/meldungen/mm/2020/09/20200924_0957_an_grossveranstaltungengiltmaskentragpflicht?cq_ck=1600935011668', '_blank');
@@ -202,5 +219,16 @@
             aggregate_rollover: true
         });
     });
+    }
+
+    $('.modify-time-period-controls button').click(function() {
+    var timePeriod = $(this).data('time_period');
+    getStatistic(timePeriod);
+    // change button state
+    $(this).addClass('active').siblings().removeClass('active');
+    
+    });
+    
+    getStatistic(0);
 
 </script>
