@@ -22,6 +22,8 @@
     <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js'></script>
     <script src='https://d3js.org/d3.v4.min.js' charset='utf-8'></script>
     <script src='lib/metricsgraphics.min.js'></script>
+    <script src='lib/papaparse.min.js'></script>
+    <script src='getdata.js'></script>
 
 </head>
 <style>
@@ -37,8 +39,12 @@
         overflow: auto;
     }
 
+    #frameworks {
+        display: grid;
+    }
+
     .modify-time-period-controls {
-        padding-left: calc(50% - 10%);
+        padding-left: calc(50% - 25%);
     }
     
     .footer {
@@ -66,12 +72,12 @@
 
     <div class="main">
         <div class="text-center mt-md-3">
-            <h2>Covid-19 Kanton Bern 2 Welle</h2>
+            <h2>Covid-19 Kanton Bern</h2>
             <p>
                 Die Statistik zeigt den 7 Tag Schnitt und den Prozentsatz zur Vorwoche im Kanton Bern. Die Massnahmen
                 werden als Meilensteine dargestellt. Die Massnahmen sind verlinkt auf die Medienmitteilungen des
                 Kantons Bern (Datum der Medienmitteilung und nicht des Inkrafttreten der Massnahme). <a
-                    href="https://www.besondere-lage.sites.be.ch/de/start.html"
+                    href="https://github.com/openZH/covid_19/blob/master/fallzahlen_kanton_total_csv_v2/COVID19_Fallzahlen_Kanton_BE_total.csv"
                     target="_blank">Datenbasis</a>
             </p>
             <p id="updateTime"></p>
@@ -80,7 +86,8 @@
         <div class='' id='covidBe'></div>
 
         <div class="btn-group btn-group-sm text-center modify-time-period-controls">
-            <button type="button" class="btn btn-default active" data-time_period="0">Alles</button>
+            <button type="button" class="btn btn-default active" data-time_period="270">Letzten 9 Monate</button>
+            <button type="button" class="btn btn-default" data-time_period="182">Letzten 6 Monate</button>
             <button type="button" class="btn btn-default" data-time_period="91">Letzten 3 Monate</button>
             <button type="button" class="btn btn-default" data-time_period="61">Letzten 2 Monate</button>
             <button type="button" class="btn btn-default" data-time_period="31">Letzter Monat</button>
@@ -91,8 +98,9 @@
 
             <div class='legend col-md-6'></div>
 
-            <div class="col-md-6 text-right">
+            <div id="frameworks" class="col-md-6 text-right">
                 <a href="https://metricsgraphicsjs.org/" target="_blank">Grafik by MetricsGraphics.js</a>
+                <a href="https://www.papaparse.com/" target="_blank">CSV Parse by Papa Parse</a>
             </div>
         </div>
 
@@ -107,167 +115,163 @@
 </html>
 
 <script>
-    var covidFile = 'data/covidBe.json';
+
+var statisticData = 'data/covidBe.json';
+
+try {
+    var updateDate = JSON.parse(sessionStorage.getItem('data'));
+    document.getElementById('updateTime').innerHTML = 'update ' + updateDate[0].slice(-1).pop().date;    
+} catch (error) {
+    setInterval(function(){
+        location.reload();
+    },1500) 
+}
+
+
+var width = window.innerWidth >= 1100 ? window.innerWidth : 1100;
+var width = width <= 1500 ? width / 100 * 98 : width / 100 * 80;
+var height = width / 2; 
+
+
+function getStatistic(days){
+d3.json(statisticData, function (data) {
     
-    var client = new XMLHttpRequest();
-    client.open('GET', covidFile, true);
-    client.send();
+    data = JSON.parse(sessionStorage.getItem('data'));
 
-    client.onreadystatechange = function () {
-        if (this.readyState == this.HEADERS_RECEIVED) {
-            var eTagServer = client.getResponseHeader('etag');
-            var date = client.getResponseHeader('date');
-            var eTag = sessionStorage.getItem('eTag'); 
-            
-             if(eTag != eTagServer){
-              sessionStorage.setItem('eTag', eTagServer)
-              sessionStorage.setItem('updateDate', date)
-            }
-            document.getElementById('updateTime').innerHTML = 'updated ' + sessionStorage.getItem('updateDate');
-        }
-    }
-
-    var width = window.innerWidth >= 1100 ? window.innerWidth : 1100;
-    var width = width <= 1500 ? width / 100 * 98 : width / 100 * 80;
-    var height = width / 2; 
-
-    MG._hooks = {};
-
-    function getStatistic(days){
-    d3.json(covidFile, function (data) {
-
-        for (var i = 0; i < data.length; i++) {
-            
-            var dataSplit = data[i];
-            var splice = days > 0 ? dataSplit.length-days : 0;
-            dataSplit.splice(0, splice); 
-
-            data[i] = MG.convert.date(dataSplit, 'date');
-        }
-
-        var mask1000 = function () {
-            window.open('https://www.be.ch/portal/de/index/mediencenter/medienmitteilungen.meldungNeu.html/portal/de/meldungen/mm/2020/09/20200924_0957_an_grossveranstaltungengiltmaskentragpflicht?cq_ck=1600935011668', '_blank');
-        };
-
-        var maskIn = function () {
-            window.open('https://www.be.ch/portal/de/index/mediencenter/medienmitteilungen.meldungNeu.mm.html/portal/de/meldungen/mm/2020/10/20201007_1123_in_oeffentlich_zugaenglicheninnenraeumenwirddiemaskenpflichteing', '_blank');
-        };
-
-        var grossVeranstalttungenErlaubt = function () {
-            alert("Grossverantstaltungen sind schweizweit wieder erlaubt.");
-        };
-
-        var slowDownBe = function () {
-            window.open('https://www.be.ch/portal/de/index/mediencenter/medienmitteilungen.meldungNeu.mm.html/portal/de/meldungen/mm/2020/10/20201023_1625_gezielte_massnahmenzurbekaempfungderpandemie', '_blank');
-        };
-
-        var grossVeranstalttungenVerboten = function () {
-            window.open('https://www.be.ch/portal/de/index/mediencenter/medienmitteilungen.meldungNeu.mm.html/portal/de/meldungen/mm/2020/10/20201018_1431_verbot_zur_durchfuehrungvongrossveranstaltungenimkantonbern', '_blank');
-        };
-
-        var bundSlowdown = function () {
-            window.open('https://www.be.ch/portal/de/index/mediencenter/medienmitteilungen.meldungNeu.mm.html/portal/de/meldungen/mm/2020/10/20201028_1518_coronavirus', '_blank');
-        };
-
-        var sperr1900 = function () {
-            alert("Sperrstunde schweizweit ab 19:00 (Bundesrat entscheid).");
-        };
+    for (var i = 0; i < data.length; i++) {
         
-        var lockdown = function () {
-            window.open('https://www.besondere-lage.sites.be.ch/content/dam/besondere-lage_sites/dokumente/de/massnahmen/massnahmen-covid-ab-20210118.pdf', '_blank');
-        };
+        var dataSplit = data[i];
+        var splice = days > 0 ? dataSplit.length-days : 0;
+        dataSplit.splice(0, splice); 
 
-        var markers = [{
-            'date': new Date('2020-09-24T00:00:00.000Z'),
-            'label': "Masken Veran.",
-            'click': mask1000
-        },
-        {
-            'date': new Date('2020-10-01T00:00:00.000Z'),
-            'label': '>1000 CH',
-            'mouseover': grossVeranstalttungenErlaubt
-        },
-        {
-            'date': new Date('2020-10-07T00:00:00.000Z'),
-            'label': "Innenräume Masken",
-            'click': maskIn
-        },
-        {
-            'date': new Date('2020-10-18T00:00:00.000Z'),
-            'label': "<1000 BE",
-            'click': grossVeranstalttungenVerboten
-        },
-        {
-            'date': new Date('2020-10-24T00:00:00.000Z'),
-            'label': 'Slow-Down BE',
-            'click': slowDownBe
-        },
-        {
-            'date': new Date('2020-10-28T00:00:00.000Z'),
-            'label': 'Slow-Down CH',
-            'click': bundSlowdown
-        },
-        {
-            'date': new Date('2020-11-27T00:00:00.000Z'),
-            'label': 'Black-Friday'
-        },
-        {
-            'date': new Date('2020-12-11T00:00:00.000Z'),
-            'label': 'CH Sperrstunde 19:00',
-            'mouseover': sperr1900
-        },
-        {
-            'date': new Date('2020-12-25T00:00:00.000Z'),
-            'label': 'Weihnachten'
-        },
-        {
-            'date': new Date('2020-12-31T00:00:00.000Z'),
-            'label': 'Silvester'
-        },
-        {
-            'date': new Date('2021-01-11T00:00:00.000Z'),
-            'label': 'Schulstart Volksschulen'
-        },
-        {
-            'date': new Date('2021-01-13T00:00:00.000Z'),
-            'label': 'Lockdown CH',
-            'click': lockdown
-        }
-        ];
-
-
-        MG.data_graphic({
-            //title: lastModified,
-            //description: "This line chart contains multiple lines.",
-            data: data,
-            animate_on_load: true,
-            width: width,
-            height: height,
-            right: 10,
-            target: '#covidBe',
-            legend: ['7 Tage Ø', 'Vorwoche %'],
-            legend_target: '.legend',
-            markers: markers,
-            aggregate_rollover: true
-        });
-    });
+        data[i] = MG.convert.date(dataSplit, 'date');
     }
 
-    $('.modify-time-period-controls button').click(function() {
-    var timePeriod = $(this).data('time_period');
-    getStatistic(timePeriod);
-    // change button state
-    $(this).addClass('active').siblings().removeClass('active');
-    
-    });
-    
-    getStatistic(0);
+    var mask1000 = function () {
+        window.open('https://www.be.ch/portal/de/index/mediencenter/medienmitteilungen.meldungNeu.html/portal/de/meldungen/mm/2020/09/20200924_0957_an_grossveranstaltungengiltmaskentragpflicht?cq_ck=1600935011668', '_blank');
+    };
 
-    var ua = window.navigator.userAgent;
-    var msie = ua.indexOf("MSIE ");
+    var maskIn = function () {
+        window.open('https://www.be.ch/portal/de/index/mediencenter/medienmitteilungen.meldungNeu.mm.html/portal/de/meldungen/mm/2020/10/20201007_1123_in_oeffentlich_zugaenglicheninnenraeumenwirddiemaskenpflichteing', '_blank');
+    };
 
-    if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./))  // If Internet Explorer, return version number
+    var grossVeranstalttungenErlaubt = function () {
+        alert("Grossverantstaltungen sind schweizweit wieder erlaubt.");
+    };
+
+    var slowDownBe = function () {
+        window.open('https://www.be.ch/portal/de/index/mediencenter/medienmitteilungen.meldungNeu.mm.html/portal/de/meldungen/mm/2020/10/20201023_1625_gezielte_massnahmenzurbekaempfungderpandemie', '_blank');
+    };
+
+    var grossVeranstalttungenVerboten = function () {
+        window.open('https://www.be.ch/portal/de/index/mediencenter/medienmitteilungen.meldungNeu.mm.html/portal/de/meldungen/mm/2020/10/20201018_1431_verbot_zur_durchfuehrungvongrossveranstaltungenimkantonbern', '_blank');
+    };
+
+    var bundSlowdown = function () {
+        window.open('https://www.be.ch/portal/de/index/mediencenter/medienmitteilungen.meldungNeu.mm.html/portal/de/meldungen/mm/2020/10/20201028_1518_coronavirus', '_blank');
+    };
+
+    var sperr1900 = function () {
+        alert("Sperrstunde schweizweit ab 19:00 (Bundesrat entscheid).");
+    };
+    
+    var lockdown = function () {
+        window.open('https://www.besondere-lage.sites.be.ch/content/dam/besondere-lage_sites/dokumente/de/massnahmen/massnahmen-covid-ab-20210118.pdf', '_blank');
+    };
+
+    var markers = [{
+        'date': new Date('2020-09-24T00:00:00.000Z'),
+        'label': "Masken Veran.",
+        'click': mask1000
+    },
     {
-        alert('Internet Explorer wird nicht supported. Bitte benutzen Sie einen anderen Browser (Edge, Chrome, Firefox).');
+        'date': new Date('2020-10-01T00:00:00.000Z'),
+        'label': '>1000 CH',
+        'mouseover': grossVeranstalttungenErlaubt
+    },
+    {
+        'date': new Date('2020-10-07T00:00:00.000Z'),
+        'label': "Innenräume Masken",
+        'click': maskIn
+    },
+    {
+        'date': new Date('2020-10-18T00:00:00.000Z'),
+        'label': "<1000 BE",
+        'click': grossVeranstalttungenVerboten
+    },
+    {
+        'date': new Date('2020-10-24T00:00:00.000Z'),
+        'label': 'Slow-Down BE',
+        'click': slowDownBe
+    },
+    {
+        'date': new Date('2020-10-28T00:00:00.000Z'),
+        'label': 'Slow-Down CH',
+        'click': bundSlowdown
+    },
+    {
+        'date': new Date('2020-11-27T00:00:00.000Z'),
+        'label': 'Black-Friday'
+    },
+    {
+        'date': new Date('2020-12-11T00:00:00.000Z'),
+        'label': 'CH Sperrstunde 19:00',
+        'mouseover': sperr1900
+    },
+    {
+        'date': new Date('2020-12-25T00:00:00.000Z'),
+        'label': 'Weihnachten'
+    },
+    {
+        'date': new Date('2020-12-31T00:00:00.000Z'),
+        'label': 'Silvester'
+    },
+    {
+        'date': new Date('2021-01-11T00:00:00.000Z'),
+        'label': 'Schulstart Volksschulen'
+    },
+    {
+        'date': new Date('2021-01-13T00:00:00.000Z'),
+        'label': 'Lockdown CH',
+        'click': lockdown
     }
-</script>
+    ];
+
+
+    MG.data_graphic({
+        //title: lastModified,
+        //description: "This line chart contains multiple lines.",
+        data: data,
+        animate_on_load: true,
+        width: width,
+        height: height,
+        right: 10,
+        target: '#covidBe',
+        legend: ['7 Tage Ø', 'Vorwoche %'],
+        legend_target: '.legend',
+        markers: markers,
+        aggregate_rollover: true
+    });
+});
+}
+
+$('.modify-time-period-controls button').click(function() {
+var timePeriod = $(this).data('time_period');
+getStatistic(timePeriod);
+// change button state
+$(this).addClass('active').siblings().removeClass('active');
+
+});
+
+getStatistic(270);
+
+var ua = window.navigator.userAgent;
+var msie = ua.indexOf("MSIE ");
+
+if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./))  // If Internet Explorer, return version number
+{
+    alert('Internet Explorer wird nicht supported. Bitte benutzen Sie einen anderen Browser (Edge, Chrome, Firefox).');
+}
+
+
+  </script>
