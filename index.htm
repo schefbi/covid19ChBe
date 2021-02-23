@@ -28,7 +28,7 @@
 </head>
 <style>
     .main {
-        padding: 0 10% 0 10%;
+        padding: 0 5% 0 5%;
     }
 
     .margin {
@@ -44,7 +44,7 @@
     }
 
     .modify-time-period-controls {
-        padding-left: calc(50% - 20%);
+        padding-left: calc(50% - 25%);
     }
     
     .footer {
@@ -53,7 +53,7 @@
         padding: 1rem 0 1rem 0;
     }
 
-    @media screen and (max-width: 1500px) {
+    @media screen and (max-width: 500px) {
         .main {
             padding: 0 1% 0 1%;
         }
@@ -86,9 +86,10 @@
         <div class='' id='covidBe'></div>
 
         <div class="btn-group btn-group-sm text-center modify-time-period-controls">
-            <button type="button" class="btn btn-default active" data-time_period="270">Letzten 9 Monate</button>
+            <button type="button" class="btn btn-default" data-time_period="0">Alles</button>
+            <button type="button" class="btn btn-default" data-time_period="270">Letzten 9 Monate</button>
             <button type="button" class="btn btn-default" data-time_period="182">Letzten 6 Monate</button>
-            <button type="button" class="btn btn-default" data-time_period="91">Letzten 3 Monate</button>
+            <button type="button" class="btn btn-default active" data-time_period="91">Letzten 3 Monate</button>
             <button type="button" class="btn btn-default" data-time_period="61">Letzten 2 Monate</button>
             <button type="button" class="btn btn-default" data-time_period="31">Letzter Monat</button>
             <button type="button" class="btn btn-default" data-time_period="15">14 Tage</button>
@@ -128,10 +129,9 @@ try {
 }
 
 
-var width = window.innerWidth >= 1100 ? window.innerWidth : 1100;
-var width = width <= 1500 ? width / 100 * 98 : width / 100 * 80;
-var height = width / 2; 
-
+var width = window.innerWidth;
+var width = width <= 500 ? width * 2 : width / 100 * 89;
+var height = width / (width < 500 ? 3 : 2.5); 
 
 function getStatistic(days){
 d3.json(statisticData, function (data) {
@@ -263,7 +263,7 @@ $(this).addClass('active').siblings().removeClass('active');
 
 });
 
-getStatistic(270);
+getStatistic(91);
 
 var ua = window.navigator.userAgent;
 var msie = ua.indexOf("MSIE ");
@@ -272,6 +272,5 @@ if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./))  // If Interne
 {
     alert('Internet Explorer wird nicht supported. Bitte benutzen Sie einen anderen Browser (Edge, Chrome, Firefox).');
 }
-
 
   </script>
