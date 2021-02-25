@@ -179,6 +179,9 @@ d3.json(statisticData, function (data) {
         window.open('https://www.besondere-lage.sites.be.ch/content/dam/besondere-lage_sites/dokumente/de/massnahmen/massnahmen-covid-ab-20210118.pdf', '_blank');
     };
     
+    var startImpfung = function () {
+        window.open('https://www.gef.be.ch/gef/de/index/Corona/Corona/corona_impfung_bern.html', '_blank');
+    };
     
     var lockerung20210301 = function () {
         window.open('https://www.newsd.admin.ch/newsd/message/attachments/65444.pdf', '_blank');
@@ -235,7 +238,8 @@ d3.json(statisticData, function (data) {
     },
     {
         'date': new Date('2021-01-11T00:00:00.000Z'),
-        'label': 'Schulstart Volksschulen'
+        'label': 'Start Impfung',
+        'click': startImpfung  
     },
     {
         'date': new Date('2021-01-13T00:00:00.000Z'),
