@@ -289,7 +289,7 @@ if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./))  // If Interne
     alert('Internet Explorer wird nicht supported. Bitte benutzen Sie einen anderen Browser (Edge, Chrome, Firefox).');
 }
 
-setTimeout(function(){
+setInterval(function(){
    sessionStorage.removeItem('data');
    location.reload();
 }, 21600000);
