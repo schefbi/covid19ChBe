@@ -27,6 +27,7 @@ Papa.parse(covidFile, {
         statisticData.push(previousWeekInPercent);
           
         //console.log(statisticData);
+	sessionStorage.removeItem('data');
         sessionStorage.setItem('data',JSON.stringify(statisticData));
     }
 });
