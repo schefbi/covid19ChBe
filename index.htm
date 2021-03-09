@@ -133,11 +133,11 @@ var width = width <= 500 ? width * 2 : width / 100 * 89;
 var height = width / (width < 500 ? 3 : 2.5); 
 
 function skin(toSkin){
- sessionStorage.setItem(skin,toSkin); 
+ sessionStorage.setItem('skin',toSkin); 
  $('#dark-skin').attr('href',toSkin);
 }
 
-skin($('#dark-skin').attr('href'));    
+skin(sessionStorage.getItem('skin'));    
     
 function getStatistic(days){
 d3.json(statisticData, function (data) {
