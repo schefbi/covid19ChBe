@@ -63,8 +63,8 @@
     <nav class="navbar">
         <div class="container-fluid">
           <ul class="nav navbar-nav navbar-right">
-            <li><a onclick="$('#dark-skin').attr('href','')">Light</a></li>
-            <li><a onclick="$('#dark-skin').attr('href','lib/dark-skin.css');">Dark</a></li>
+            <li><a onclick="skin('')">Light</a></li>
+            <li><a onclick="skin('lib/dark-skin.css')">Dark</a></li>
           </ul>
         </div>
       </nav>
@@ -132,6 +132,13 @@ var width = window.innerWidth;
 var width = width <= 500 ? width * 2 : width / 100 * 89;
 var height = width / (width < 500 ? 3 : 2.5); 
 
+function skin(toSkin){
+ sessionStorage.setItem(skin,toSkin); 
+ $('#dark-skin').attr('href',toSkin);
+}
+
+skin($('#dark-skin').attr('href'));    
+    
 function getStatistic(days){
 d3.json(statisticData, function (data) {
     
