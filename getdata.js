@@ -51,7 +51,7 @@ function get7dayAverage(newPositivPerDay) {
         result.push({date: item.date, value: average});
         //console.log(i,last7Day,item.newPositiv, average);
 
-        i++
+        i++;
     }); 
     return result;
 }
@@ -72,7 +72,7 @@ function getPreviousWeekInPercent(sevenDayAverage) {
         result.push({date: item.date, value: previousWeekInPercent});
         //console.log(i,last7Day,item.value, previousWeekInPercent);
 
-        i++
+        i++;
     }); 
     return result;
 
@@ -83,6 +83,6 @@ function getLast7Day(i){
 }
 
 function getLast7DayRow(i){
-    var last7Day = getLast7Day(i)    
-    return last7Day < 0 ? 1 : last7Day
+    var last7Day = getLast7Day(i);   
+    return last7Day < 0 ? 1 : last7Day;
 }
