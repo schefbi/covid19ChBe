@@ -11,14 +11,14 @@ Papa.parse(covidFile, {
         var newPositivPerDay = [];
         results.data.forEach(item => {
             
-            var vent =  Number(item.current_vent) === 0 || item.current_vent === '' ? lastvalue : Number(item.current_vent);
+            var vent =  Number(item.current_vent) === 0 || item.current_vent === '' ? lastvalueVent : Number(item.current_vent);
             var ncumul_conf = Number(item.ncumul_conf) === 0 ? lastvalue : Number(item.ncumul_conf);
             //console.log(item.date, ncumul_conf, Number(item.ncumul_conf));
             newItem = {date: item.date, newPositiv: ncumul_conf - lastvalue, vent: vent, deads: item.ncumul_decesed};
             newPositivPerDay.push(newItem);
             
             lastvalue = ncumul_conf;
-            lastvalueVent = current_vent;
+            lastvalueVent = vent;
         });
 
         console.log(newPositivPerDay);
