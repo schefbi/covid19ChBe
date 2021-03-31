@@ -11,23 +11,26 @@ Papa.parse(covidFile, {
         var newPositivPerDay = [];
         results.data.forEach(item => {
             
+            var vent =  Number(item.current_vent) === 0 || item.current_vent === '' ? lastvalue : Number(item.current_vent);
             var ncumul_conf = Number(item.ncumul_conf) === 0 ? lastvalue : Number(item.ncumul_conf);
             //console.log(item.date, ncumul_conf, Number(item.ncumul_conf));
-            newItem = {date: item.date, newPositiv: ncumul_conf - lastvalue};
+            newItem = {date: item.date, newPositiv: ncumul_conf - lastvalue, vent: vent, deads: item.ncumul_decesed};
             newPositivPerDay.push(newItem);
             
             lastvalue = ncumul_conf;
+            lastvalueVent = current_vent;
         });
 
+        console.log(newPositivPerDay);
         var sevenDayAverage = get7dayAverage(newPositivPerDay);
         //console.log(sevenDayAverage);
         var previousWeekInPercent = getPreviousWeekInPercent(sevenDayAverage);
-        var statisticData = []
+        var statisticData = [];
         statisticData.push(sevenDayAverage);
         statisticData.push(previousWeekInPercent);
           
         //console.log(statisticData);
-	sessionStorage.removeItem('data');
+	    sessionStorage.removeItem('data');
         sessionStorage.setItem('data',JSON.stringify(statisticData));
     }
 });
