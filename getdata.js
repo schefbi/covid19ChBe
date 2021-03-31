@@ -40,9 +40,11 @@ Papa.parse(covidFile, {
 });
 
 function dateValueDeads(jsonData) {
+    var result = [];
     jsonData.forEach(item => {
         result.push({date: item.date, value: item.deads}); 
     });
+    return result;
 }
 
 function get7dayAverage(jsonData, column) {
