@@ -15,7 +15,7 @@ Papa.parse(covidFile, {
             var vent =  Number(item.current_vent) === 0 || item.current_vent === '' ? lastvalueVent : Number(item.current_vent);
             var ncumul_conf = Number(item.ncumul_conf) === 0 ? lastvalue : Number(item.ncumul_conf);
             //console.log(item.date, ncumul_conf, Number(item.ncumul_conf));
-            newItem = {date: item.date, newPositiv: ncumul_conf - lastvalue, vent: vent, deads: item.ncumul_decesed};
+            newItem = {date: item.date, newPositiv: ncumul_conf - lastvalue, vent: vent, deads: item.ncumul_deceased};
             newPositivPerDay.push(newItem);
             
             lastvalue = ncumul_conf;
