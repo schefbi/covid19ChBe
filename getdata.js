@@ -31,6 +31,9 @@ Papa.parse(covidFile, {
         statisticData.push(sevenDayAverage);
         statisticData.push(previousWeekInPercent);
         statisticData.push(vent7DayAverage);
+        statisticData.push(jsonData.forEach(item => {
+            result.push({date: item.date, value: item.deads}); 
+        }));
           
         console.log(statisticData);
 	    sessionStorage.removeItem('data');
