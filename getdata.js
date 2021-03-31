@@ -8,6 +8,7 @@ Papa.parse(covidFile, {
         //console.log('Parsing complete:', results.data, file);
         
         var lastvalue = 1;
+        var lastvalueVent = 0;
         var newPositivPerDay = [];
         results.data.forEach(item => {
             
