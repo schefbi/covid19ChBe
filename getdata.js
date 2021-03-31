@@ -31,9 +31,7 @@ Papa.parse(covidFile, {
         statisticData.push(sevenDayAverage);
         statisticData.push(previousWeekInPercent);
         statisticData.push(vent7DayAverage);
-        statisticData.push(jsonData.forEach(item => {
-            result.push({date: item.date, value: item.deads}); 
-        }));
+        statisticData.push(dateValueDeads(jsonData));
           
         console.log(statisticData);
 	    sessionStorage.removeItem('data');
@@ -41,6 +39,11 @@ Papa.parse(covidFile, {
     }
 });
 
+function dateValueDeads(jsonData) {
+    jsonData.forEach(item => {
+        result.push({date: item.date, value: item.deads}); 
+    });
+}
 
 function get7dayAverage(jsonData, column) {
 
