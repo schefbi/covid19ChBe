@@ -26,10 +26,12 @@ Papa.parse(covidFile, {
         var sevenDayAverage = get7dayAverage(jsonData,'newPositiv');
         //console.log(sevenDayAverage);
         var previousWeekInPercent = getPreviousWeekInPercent(sevenDayAverage);
+        var dayInzidenz = getdayInzidenz(jsonData,14);
         var vent7DayAverage = get7dayAverage(jsonData,'vent');
         var statisticData = [];
         statisticData.push(sevenDayAverage);
         statisticData.push(previousWeekInPercent);
+        statisticData.push(dayInzidenz);
         statisticData.push(vent7DayAverage);
         //statisticData.push(dateValueDeads(jsonData));
           
@@ -47,7 +49,7 @@ function dateValueDeads(jsonData) {
     return result;
 }
 
-function getdayInzidenz(jsonData, column,days) {
+function getdayInzidenz(jsonData,days) {
 
     var i = 0;
     var sumDays = 0;

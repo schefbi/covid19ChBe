@@ -192,8 +192,10 @@ d3.json(statisticData, function (data) {
     var lockerung20210224 = function () {
         window.open('https://www.newsd.admin.ch/newsd/message/attachments/65444.pdf', '_blank');
     };
-    
-    
+
+    var lockerung20210414 = function () {
+        window.open('https://www.admin.ch/gov/de/start/dokumentation/medienmitteilungen.msg-id-83106.html', '_blank');
+    };    
 
     var markers = [{
         'date': new Date('2020-09-24T00:00:00.000Z'),
@@ -256,6 +258,11 @@ d3.json(statisticData, function (data) {
         'date': new Date('2021-02-24T00:00:00.000Z'),
         'label': 'Lockerung 1',
         'click': lockerung20210224
+    },
+    {
+        'date': new Date('2021-04-14T00:00:00.000Z'),
+        'label': 'Lockerung 2',
+        'click': lockerung20210414
     }
     ];
 
@@ -269,7 +276,7 @@ d3.json(statisticData, function (data) {
         height: height,
         right: 10,
         target: '#covidBe',
-        legend: ['7 Tage Ø Neue Fälle', 'Vorwoche % neue Fälle', '7 Tage Ø Intensiv beatmet'],
+        legend: ['7 Tage Ø Neue Fälle', 'Vorwoche % neue Fälle','14 Tage Inzidenz pro 100000', '7 Tage Ø Intensiv beatmet'],
         legend_target: '.legend',
         markers: markers,
         aggregate_rollover: true
