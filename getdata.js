@@ -47,6 +47,28 @@ function dateValueDeads(jsonData) {
     return result;
 }
 
+function getdayInzidenz(jsonData, column,days) {
+
+    var i = 0;
+    var sumDays = 0;
+    var inzidenz;
+    var result = [];
+        
+    jsonData.forEach(item => {
+        
+        var lastDaysRow = getLastDaysRow(i,days);
+
+        sumDays =  sumDays + item.newPositiv - jsonData[lastDaysRow].newPositiv;
+        inzidenz = sumDays / (1000000/100000);
+
+        result.push({date: item.date, value: inzidenz});
+        console.log(i,lastDaysRow,item.newPositiv, inzidenz);
+
+        i++;
+    }); 
+    return result;
+}
+
 function get7dayAverage(jsonData, column) {
 
     var i = 0;
@@ -56,8 +78,8 @@ function get7dayAverage(jsonData, column) {
         
     jsonData.forEach(item => {
         
-        var last7Day = getLast7Day(i);
-        var last7DayRow = getLast7DayRow(i);
+        var last7Day = getLastDays(i,7);
+        var last7DayRow = getLastDaysRow(i,7);
 
         if(column === 'vent'){
             sum7Day =  sum7Day + item.vent - jsonData[last7DayRow].vent;
@@ -83,8 +105,8 @@ function getPreviousWeekInPercent(sevenDayAverage) {
         
     sevenDayAverage.forEach(item => {
         
-        var last7Day = getLast7Day(i);
-        var last7DayRow = getLast7DayRow(i);
+        var last7Day = getLastDays(i,7);
+        var last7DayRow = getLastDaysRow(i,7);
 
         previousWeekInPercent = 100 / sevenDayAverage[last7DayRow].value * item.value - 100;
         
@@ -97,11 +119,11 @@ function getPreviousWeekInPercent(sevenDayAverage) {
 
 }
 
-function getLast7Day(i){
-    return i-7;
+function getLastDays(i,days){
+    return i-days;
 }
 
-function getLast7DayRow(i){
-    var last7Day = getLast7Day(i);   
-    return last7Day < 0 ? 1 : last7Day;
+function getLastDaysRow(i,days){
+    var lastDays = getLastDays(i,days);   
+    return lastDays < 0 ? 1 : lastDays;
 }
