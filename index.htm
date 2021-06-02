@@ -137,7 +137,7 @@ function skin(toSkin){
  $('#dark-skin').attr('href',toSkin);
 }
 
-skin(sessionStorage.getItem('skin'));    
+skin(sessionStorage.getItem('skin') === '' ? '' : 'lib/dark-skin.css');    
     
 function getStatistic(days){
 d3.json(statisticData, function (data) {
