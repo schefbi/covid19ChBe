@@ -63,7 +63,7 @@
     <nav class="navbar">
         <div class="container-fluid">
           <ul class="nav navbar-nav navbar-right">
-            <li><a onclick="skin('')">Light</a></li>
+            <li><a onclick="skin('light')">Light</a></li>
             <li><a onclick="skin('lib/dark-skin.css')">Dark</a></li>
           </ul>
         </div>
@@ -124,7 +124,7 @@ try {
 } catch (error) {
     setInterval(function(){
         location.reload();
-    },1000) 
+    },2000) 
 }
 
 
@@ -137,7 +137,7 @@ function skin(toSkin){
  $('#dark-skin').attr('href',toSkin);
 }
 
-skin(sessionStorage.getItem('skin') !== '' ? '' : 'lib/dark-skin.css');    
+skin(sessionStorage.getItem('skin') === 'light' ? 'light' : 'lib/dark-skin.css');    
     
 function getStatistic(days){
 d3.json(statisticData, function (data) {
