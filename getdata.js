@@ -64,7 +64,7 @@ function getdayInzidenz(jsonData,days) {
         inzidenz = sumDays / (1000000/100000);
 
         result.push({date: item.date, value: inzidenz});
-        console.log(i,lastDaysRow,item.newPositiv, inzidenz);
+        //console.log(i,lastDaysRow,item.newPositiv, inzidenz);
 
         i++;
     }); 
