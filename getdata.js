@@ -28,11 +28,13 @@ Papa.parse(covidFile, {
         var previousWeekInPercent = getPreviousWeekInPercent(sevenDayAverage);
         var dayInzidenz = getdayInzidenz(jsonData,14);
         var vent7DayAverage = get7dayAverage(jsonData,'vent');
+        var ventpreviousWeekInPercent = getPreviousWeekInPercent(vent7DayAverage);
         var statisticData = [];
         statisticData.push(sevenDayAverage);
         statisticData.push(previousWeekInPercent);
         statisticData.push(dayInzidenz);
         statisticData.push(vent7DayAverage);
+        statisticData.push(ventpreviousWeekInPercent);
         //statisticData.push(dateValueDeads(jsonData));
           
         console.log(statisticData);
