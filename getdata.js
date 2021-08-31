@@ -37,7 +37,7 @@ Papa.parse(covidFile, {
         statisticData.push(ventpreviousWeekInPercent);
         //statisticData.push(dateValueDeads(jsonData));
           
-        console.log(statisticData);
+        //console.log(statisticData);
 	    sessionStorage.removeItem('data');
         sessionStorage.setItem('data',JSON.stringify(statisticData));
     }
@@ -101,7 +101,7 @@ function get7dayAverage(jsonData, column) {
     return result;
 }
 
-function getPreviousWeekInPercent(sevenDayAverage) {
+function getPreviousWeekInPercent(sevenDayAverage, days) {
     
     var i = 0;
     var previousWeekInPercent;
@@ -109,10 +109,12 @@ function getPreviousWeekInPercent(sevenDayAverage) {
         
     sevenDayAverage.forEach(item => {
         
-        var last7Day = getLastDays(i,7);
-        var last7DayRow = getLastDaysRow(i,7);
+        //var last7Day = getLastDays(i,7);
+        days = days | 7;
+        console.log(days);
+        var lastDayRow = getLastDaysRow(i,days);
 
-        previousWeekInPercent = 100 / sevenDayAverage[last7DayRow].value * item.value - 100;
+        previousWeekInPercent = 100 / sevenDayAverage[lastDayRow].value * item.value - 100;
         
         result.push({date: item.date, value: previousWeekInPercent});
         //console.log(i,last7Day,item.value, previousWeekInPercent);
