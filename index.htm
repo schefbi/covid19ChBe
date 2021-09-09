@@ -201,6 +201,10 @@ d3.json(statisticData, function (data) {
         window.open('https://www.admin.ch/gov/de/start/dokumentation/medienmitteilungen.msg-id-83697.html', '_blank');
     };
     
+    var cert3G20210908 = function () {
+        window.open('https://www.admin.ch/gov/de/start/dokumentation/medienmitteilungen/bundesrat.msg-id-85035.html', '_blank');
+    };
+    
     var markers = [{
         'date': new Date('2020-09-24T00:00:00.000Z'),
         'label': "Masken Veran.",
@@ -272,6 +276,11 @@ d3.json(statisticData, function (data) {
         'date': new Date('2021-05-26T00:00:00.000Z'),
         'label': 'Lockerung 3',
         'click': lockerung20210526
+    },
+    {
+        'date': new Date('2021-09-08T00:00:00.000Z'),
+        'label': 'Zertifikatspflicht ausdehnung',
+        'click': cert3G20210908
     }
     ];
 
