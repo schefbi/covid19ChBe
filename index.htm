@@ -86,6 +86,7 @@
 
         <div class="btn-group btn-group-sm text-center modify-time-period-controls">
             <button type="button" class="btn btn-default" data-time_period="0">Alles</button>
+            <button type="button" class="btn btn-default" data-time_period="366">Letztes Jahrs</button>
             <button type="button" class="btn btn-default" data-time_period="270">Letzten 9 Monate</button>
             <button type="button" class="btn btn-default" data-time_period="182">Letzten 6 Monate</button>
             <button type="button" class="btn btn-default active" data-time_period="91">Letzten 3 Monate</button>
@@ -323,5 +324,5 @@ if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./))  // If Interne
 setInterval(function(){
    sessionStorage.removeItem('data');
    location.reload();
-}, 21600000);
+}, 600000);
 </script>
