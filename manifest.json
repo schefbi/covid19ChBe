@@ -53,7 +53,7 @@
       "purpose": "any maskable"
     }
   ],
-  "categories": [],
+  "categories": ["covid19","statistics"],
   "screenshots": [],
   "shortcuts": []
 }
