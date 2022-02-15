@@ -224,6 +224,11 @@ d3.json(statisticData, function (data) {
     var homeOffice2g = function () {
         window.open('https://www.admin.ch/gov/de/start/dokumentation/medienmitteilungen/bundesrat.msg-id-86544.html', '_blank');
     };
+    var quarantHomeOffice = function () {
+        window.open('https://www.admin.ch/gov/de/start/dokumentation/medienmitteilungen/bundesrat.msg-id-87041.html', '_blank');
+    };
+    
+
     var markers = [{
         'date': new Date('2020-09-01T00:00:00.000Z'),
         'label': 'Entdeckung Alpha Grossbritanien'
@@ -322,6 +327,11 @@ d3.json(statisticData, function (data) {
         'date': new Date('2021-12-17T00:00:00.000Z'),
         'label': '2G teils 2G+, Homeoffice-Pflicht',
         'click': homeOffice2g
+    },
+    {
+        'date': new Date('2021-02-02T00:00:00.000Z'),
+        'label': 'Aufhebung, Quarantäne, Homeoffice-Pflicht',
+        'click': quarantHomeOffice
     }
     ];
 
