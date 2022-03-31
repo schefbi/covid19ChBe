@@ -230,6 +230,11 @@ d3.json(statisticData, function (data) {
     var aufhebungMassnahmen = function () {
         window.open('https://www.admin.ch/gov/de/start/dokumentation/medienmitteilungen/bundesrat.msg-id-87216.html', '_blank');
     };
+
+    var normalPhase = function () {
+        window.open('https://www.admin.ch/gov/de/start/dokumentation/medienmitteilungen/bundesrat.msg-id-87801.html', '_blank');
+    };
+    
     
 
     var markers = [{
@@ -340,6 +345,11 @@ d3.json(statisticData, function (data) {
         'date': new Date('2022-02-16T00:00:00.000Z'),
         'label': 'Aufhebung fast aller Massnahmen',
         'click': aufhebungMassnahmen
+    },
+    {
+        'date': new Date('2022-03-30T00:00:00.000Z'),
+        'label': 'Rückkehr in die normale Lage',
+        'click': normalPhase
     }
     ];
 
